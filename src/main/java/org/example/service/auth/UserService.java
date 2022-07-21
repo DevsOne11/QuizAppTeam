@@ -2,7 +2,9 @@ package org.example.service.auth;
 
 import org.example.criteria.auth.UserCriteria;
 import org.example.domain.auth.User;
+import org.example.dto.auth.UserCreateDto;
 import org.example.dto.auth.UserDto;
+import org.example.dto.auth.UserUpdateDto;
 import org.example.response.Data;
 import org.example.response.ResponseEntity;
 import org.example.service.Service;
@@ -11,7 +13,7 @@ import org.example.service.ServiceCRUD;
 import java.util.List;
 
 public class UserService implements Service, ServiceCRUD<
-        UserDto, Long, UserCriteria, User> {
+        UserCreateDto, UserUpdateDto, Long, UserCriteria, User> {
 
     private UserService(){}
     private static UserService instance;
@@ -25,12 +27,12 @@ public class UserService implements Service, ServiceCRUD<
 
 
     @Override
-    public ResponseEntity<Data<Boolean>> create(UserDto create) {
+    public ResponseEntity<Data<Boolean>> create(UserCreateDto userCreateDto) {
         return null;
     }
 
     @Override
-    public ResponseEntity<Data<Boolean>> update(UserDto update) {
+    public ResponseEntity<Data<Boolean>> update(UserUpdateDto userUpdateDto) {
         return null;
     }
 
