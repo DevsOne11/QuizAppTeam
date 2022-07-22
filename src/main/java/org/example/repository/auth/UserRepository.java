@@ -10,7 +10,9 @@ import java.util.Optional;
 public class UserRepository implements Repository, RepositoryCRUD<
         Long, User> {
 
-private UserRepository(){}
+    private UserRepository() {
+    }
+
     private static UserRepository instance;
 
     public static UserRepository getInstance() {
