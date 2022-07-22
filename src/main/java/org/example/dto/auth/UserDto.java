@@ -8,16 +8,16 @@ import org.example.dto.GenericEntity;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @ToString
-public class UserDto extends GenericEntity implements BaseEntity {
+public class UserDto extends GenericEntity {
     private String username;
     private String password;
     private UserRole role;
     private LanguageEnum language;
 
     @Builder
-    public UserDto(String username, String password, UserRole role, LanguageEnum language) {
+    public UserDto(Long id, String username, String password, UserRole role, LanguageEnum language) {
+        super(id);
         this.username = username;
         this.password = password;
         this.role = role;

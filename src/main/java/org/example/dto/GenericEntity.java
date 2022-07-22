@@ -1,5 +1,10 @@
 package org.example.dto;
 
-public abstract class GenericEntity {
-    private Long id;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@AllArgsConstructor
+@Getter
+public class GenericEntity implements BaseEntity{
+    public Long id;
 }
