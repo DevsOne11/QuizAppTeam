@@ -1,11 +1,11 @@
 package org.example.domain.auth;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.*;
 import org.example.domain.Domain;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Where;
+import org.hibernate.type.NumericBooleanConverter;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,18 +15,32 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Builder
 @Entity
 @Where(clause = "deleted = false")
 public class Subject extends Auditable implements Domain {
 
-    @Builder(builderMethodName = "childBuilder")
-    public Subject(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, Long createdBy, Long updatedBy, boolean deleted, String code, String name, String description, List<Question> questions) {
-        super(id, createdAt, updatedAt, createdBy, updatedBy, deleted);
-        this.code = code;
-        this.name = name;
-        this.description = description;
-        this.questions = questions;
-    }
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @CreationTimestamp
+    @Column(name = "created_at", nullable = false, columnDefinition = "timestamp default now()")
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @Column(nullable = false, name = "created_by")
+    private Long createdBy;
+
+    @Column(name = "updated_by")
+    private Long updatedBy;
+
+
+    @Builder.Default
+    @Convert(converter = NumericBooleanConverter.class)
+    private boolean deleted = false;
 
     @Column(unique = true, nullable = false)
     private String code;

@@ -3,6 +3,7 @@ package org.example.domain.auth;
 import jakarta.persistence.*;
 import lombok.*;
 import org.example.domain.Domain;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Where;
 import org.hibernate.type.NumericBooleanConverter;
 
@@ -14,26 +15,41 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @ToString
 @Entity
+@Builder
 @Where(clause = "deleted = false")
 public class QuizQuestion extends Auditable implements Domain {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @CreationTimestamp
+    @Column(name = "created_at", nullable = false, columnDefinition = "timestamp default now()")
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @Column(nullable = false, name = "created_by")
+    private Long createdBy;
+
+    @Column(name = "updated_by")
+    private Long updatedBy;
+
+
+    @Builder.Default
+    @Convert(converter = NumericBooleanConverter.class)
+    private boolean deleted = false;
     @ManyToOne
     private Quiz quiz;
 
     @OneToOne
     private Question question;
 
-//    @Builder.Default
+    @Builder.Default
     @Convert(converter = NumericBooleanConverter.class)
     private Boolean isRight = false;
 
 //    @Builder.Default
 
-    @Builder(builderMethodName = "childBuilder")
-    public QuizQuestion(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, Long createdBy, Long updatedBy, boolean deleted, Quiz quiz, Question question, Boolean isRight) {
-        super(id, createdAt, updatedAt, createdBy, updatedBy, deleted);
-        this.quiz = quiz;
-        this.question = question;
-        this.isRight = isRight;
-    }
 }

@@ -1,12 +1,10 @@
 package org.example.domain.auth;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.*;
 import org.example.domain.Domain;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Where;
 import org.hibernate.type.NumericBooleanConverter;
 
@@ -17,25 +15,40 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Builder
 @Entity
 @Where(clause = "deleted = false")
-public class Answer extends Auditable implements Domain {
+public class Answer implements Domain {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @CreationTimestamp
+    @Column(name = "created_at", nullable = false, columnDefinition = "timestamp default now()")
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @Column(nullable = false, name = "created_by")
+    private Long createdBy;
+
+    @Column(name = "updated_by")
+    private Long updatedBy;
+
+
+    @Builder.Default
+    @Convert(converter = NumericBooleanConverter.class)
+    private boolean deleted = false;
     @ManyToOne
     private Question question;
 
     @Column(nullable = false)
     private String answer;
 
-//    @Builder.Default
+    @Builder.Default
     @Convert(converter = NumericBooleanConverter.class)
     private Boolean isTrue = false;
 
 
-    @Builder(builderMethodName = "childBuilder")
-    public Answer(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, Long createdBy, Long updatedBy, boolean deleted, Question question, String answer, Boolean isTrue) {
-        super(id, createdAt, updatedAt, createdBy, updatedBy, deleted);
-        this.question = question;
-        this.answer = answer;
-        this.isTrue = isTrue;
-    }
 }

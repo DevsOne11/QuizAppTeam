@@ -5,7 +5,9 @@ import lombok.*;
 import org.example.domain.Domain;
 import org.example.domain.role.LanguageEnum;
 import org.example.domain.role.QuizLevel;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Where;
+import org.hibernate.type.NumericBooleanConverter;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,10 +16,32 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @ToString
 @Entity
 @Where(clause = "deleted = false")
-public class Question extends Auditable implements Domain {
+public class Question implements Domain {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @CreationTimestamp
+    @Column(name = "created_at", nullable = false, columnDefinition = "timestamp default now()")
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @Column(nullable = false, name = "created_by")
+    private Long createdBy;
+
+    @Column(name = "updated_by")
+    private Long updatedBy;
+
+
+    @Builder.Default
+    @Convert(converter = NumericBooleanConverter.class)
+    private boolean deleted = false;
 
     @Column(nullable = false)
     private String question;
@@ -25,27 +49,17 @@ public class Question extends Auditable implements Domain {
     @ManyToOne
     private Subject subject;
 
-//    @Builder.Default
-//    @Column(nullable = false)
+    @Builder.Default
+    @Column(nullable = false)
     @Convert(converter = Quiz.LevelStringConverter.class)
     private QuizLevel level = QuizLevel.EASY;
 
-//    @Builder.Default
-//    @Column(nullable = false)
+    @Builder.Default
+    @Column(nullable = false)
     @Convert(converter = Quiz.LanguageEnumConvertor.class)
     private LanguageEnum language = LanguageEnum.UZ;
 
     @OneToMany(mappedBy = "question")
     private List<Answer> answers;
 
-
-    @Builder(builderMethodName = "childBuilder")
-    public Question(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, Long createdBy, Long updatedBy, boolean deleted, String question, Subject subject, QuizLevel level, LanguageEnum language, List<Answer> answers) {
-        super(id, createdAt, updatedAt, createdBy, updatedBy, deleted);
-        this.question = question;
-        this.subject = subject;
-        this.level = level;
-        this.language = language;
-        this.answers = answers;
-    }
 }

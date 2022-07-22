@@ -40,11 +40,22 @@ public class UserRepository implements Repository, RepositoryCRUD<
        } catch (Exception e){
          e.printStackTrace();
        }
-       return Optional.ofNullable(null);
+       return Optional.empty();
     }
 
     @Override
     public Optional<Boolean> update(AuthUser domain) {
+        try {
+
+            Session session = sessionFactory.openSession();
+            session.getTransaction().begin();
+            session.update(domain);
+            session.getTransaction().commit();
+            session.close();
+            return Optional.of(true);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
         return Optional.empty();
     }
 

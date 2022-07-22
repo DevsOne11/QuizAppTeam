@@ -54,7 +54,7 @@ public class HibernateConfigurer {
                 // Create MetadataSources
                 MetadataSources sources = new MetadataSources(registry);
 
-                Reflections reflections = new Reflections("uz.jl.entity");
+                Reflections reflections = new Reflections("org.example.domain");
 
                 reflections.get(SubTypes.of(TypesAnnotated.with(Entity.class)).asClass())
                         .forEach(sources::addAnnotatedClass);

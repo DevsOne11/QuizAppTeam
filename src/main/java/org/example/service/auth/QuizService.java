@@ -32,7 +32,7 @@ public class QuizService implements Service, ServiceCRUD<
 
     @Override
     public ResponseEntity<Data<Boolean>> create(QuizCreateDto quizCreateDto) {
-        Optional<Boolean> save = quizRepository.save(Quiz.childBuilder()
+        Optional<Boolean> save = quizRepository.save(Quiz.builder()
                 .createdBy(-1L)
                 .quizQuestions(quizCreateDto.getQuizQuestions())
                 .language(quizCreateDto.getLanguageEnum())

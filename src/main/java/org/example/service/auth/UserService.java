@@ -33,7 +33,7 @@ public class UserService implements Service, ServiceCRUD<
     @Override
     public ResponseEntity<Data<Boolean>> create(UserCreateDto userCreateDto) {
         try {
-            Optional<Boolean> save = userRepository.save(AuthUser.childBuilder()
+            Optional<Boolean> save = userRepository.save(AuthUser.builder()
                     .username(userCreateDto.getUsername())
                     .password(userCreateDto.getPassword())
                     .createdBy(-1l)
@@ -58,6 +58,11 @@ public class UserService implements Service, ServiceCRUD<
 
     @Override
     public ResponseEntity<Data<Boolean>> update(UserUpdateDto userUpdateDto) {
+        userRepository.update(AuthUser.builder()
+                        .username(userUpdateDto.getUsername())
+                        .password(userUpdateDto.getPassword())
+                        .language(userUpdateDto.getLanguage())
+                .build());
         return null;
     }
 
