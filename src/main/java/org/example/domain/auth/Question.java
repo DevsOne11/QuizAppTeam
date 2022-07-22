@@ -14,7 +14,6 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @ToString
 @Entity
 @Where(clause = "deleted = false")
@@ -26,13 +25,13 @@ public class Question extends Auditable implements Domain {
     @ManyToOne
     private Subject subject;
 
-    @Builder.Default
-    @Column(nullable = false)
+//    @Builder.Default
+//    @Column(nullable = false)
     @Convert(converter = Quiz.LevelStringConverter.class)
     private QuizLevel level = QuizLevel.EASY;
 
-    @Builder.Default
-    @Column(nullable = false)
+//    @Builder.Default
+//    @Column(nullable = false)
     @Convert(converter = Quiz.LanguageEnumConvertor.class)
     private LanguageEnum language = LanguageEnum.UZ;
 

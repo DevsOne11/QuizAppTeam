@@ -19,16 +19,16 @@ public class HibernateConfigurer {
     private static SessionFactory sessionFactory;
 
     public static SessionFactory getSessionFactory() {
-        if (sessionFactory == null) {
+        if (sessionFactory == null || sessionFactory.isClosed()) {
             try {
                 StandardServiceRegistryBuilder registryBuilder = new StandardServiceRegistryBuilder();
 
                 Properties settings = new Properties();
 
                 settings.put(Environment.DRIVER, "org.postgresql.Driver");
-                settings.put(Environment.URL, "jdbc:postgresql://localhost:5433/hibernate");
+                settings.put(Environment.URL, "jdbc:postgresql://localhost:5432/quizapp");
                 settings.put(Environment.USER, "postgres");
-                settings.put(Environment.PASS, "12345");
+                settings.put(Environment.PASS, "1212");
                 settings.put(Environment.SHOW_SQL, "true");
                 settings.put(Environment.HBM2DDL_AUTO, "update");
                 settings.put(Environment.FORMAT_SQL, "true");

@@ -1,7 +1,7 @@
 package org.example.repository.auth;
 
 import org.example.config.HibernateConfigurer;
-import org.example.domain.auth.AuthUser;
+import org.example.domain.auth.Quiz;
 import org.example.repository.Repository;
 import org.example.repository.RepositoryCRUD;
 import org.hibernate.Session;
@@ -10,26 +10,20 @@ import org.hibernate.SessionFactory;
 import java.util.List;
 import java.util.Optional;
 
-public class UserRepository implements Repository, RepositoryCRUD<
-        Long, AuthUser> {
+public class QuizRepository implements Repository, RepositoryCRUD<
+        Long, Quiz> {
 
-   private SessionFactory sessionFactory = HibernateConfigurer.getSessionFactory();
+    private static QuizRepository instance;
 
-    private UserRepository() {
-    }
-
-    private static UserRepository instance;
-
-    public static UserRepository getInstance() {
+    public static QuizRepository getInstance() {
         if (instance == null) {
-            instance = new UserRepository();
+            instance = new QuizRepository();
         }
         return instance;
     }
-
-
+    private final SessionFactory sessionFactory = HibernateConfigurer.getSessionFactory();
     @Override
-    public Optional<Boolean> save(AuthUser domain) {
+    public Optional<Boolean> save(Quiz domain) {
        try{
            Session session = sessionFactory.openSession();
            session.getTransaction().begin();
@@ -38,23 +32,23 @@ public class UserRepository implements Repository, RepositoryCRUD<
            session.close();
            return Optional.of(true);
        } catch (Exception e){
-         e.printStackTrace();
+           e.printStackTrace();
        }
-       return Optional.ofNullable(null);
-    }
-
-    @Override
-    public Optional<Boolean> update(AuthUser domain) {
         return Optional.empty();
     }
 
     @Override
-    public Optional<AuthUser> get(Long aLong) {
+    public Optional<Boolean> update(Quiz domain) {
         return Optional.empty();
     }
 
     @Override
-    public Optional<List<AuthUser>> getAll() {
+    public Optional<Quiz> get(Long aLong) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<List<Quiz>> getAll() {
         return Optional.empty();
     }
 

@@ -21,8 +21,8 @@ public class Quiz extends Auditable implements Domain {
     @Column(nullable = false, unique = true)
     private String quizName;
 
-    @ManyToOne
-    private Subject subject;
+    @Column(nullable = false)
+    private Long subject_id;
 
     @Column(nullable = false)
     @Convert(converter = LevelStringConverter.class)
@@ -33,7 +33,7 @@ public class Quiz extends Auditable implements Domain {
     @Convert(converter = LanguageEnumConvertor.class)
     private LanguageEnum language = LanguageEnum.UZ;
 
-    @Builder.Default
+//    @Builder.Default
     @Convert(converter = NumericBooleanConverter.class)
     private Boolean isCompleted = false;
 
@@ -43,11 +43,12 @@ public class Quiz extends Auditable implements Domain {
     @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = QuizQuestion.class)
     private List<QuizQuestion> quizQuestions;
 
+    private Integer ball;
     @Builder(builderMethodName = "childBuilder")
-    public Quiz(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, Long createdBy, Long updatedBy, boolean deleted, String quizName, Subject subject, QuizLevel level, LanguageEnum language, Boolean isCompleted, Integer quizCount, List<QuizQuestion> quizQuestions) {
+    public Quiz(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, Long createdBy, Long updatedBy, boolean deleted, String quizName, Long subject_id, QuizLevel level, LanguageEnum language, Boolean isCompleted, Integer quizCount, List<QuizQuestion> quizQuestions) {
         super(id, createdAt, updatedAt, createdBy, updatedBy, deleted);
         this.quizName = quizName;
-        this.subject = subject;
+        this.subject_id = subject_id;
         this.level = level;
         this.language = language;
         this.isCompleted = isCompleted;
@@ -71,6 +72,7 @@ public class Quiz extends Auditable implements Domain {
                 case "easy" -> QuizLevel.EASY;
                 case "medium" -> QuizLevel.MEDIUM;
                 case "hard" -> QuizLevel.HARD;
+                default -> null;
             };
         }
     }

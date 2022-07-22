@@ -1,9 +1,6 @@
 package org.example.domain.auth;
 
-import jakarta.persistence.Convert;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.*;
 import org.example.domain.Domain;
 import org.hibernate.annotations.Where;
@@ -23,23 +20,20 @@ public class QuizQuestion extends Auditable implements Domain {
     @ManyToOne
     private Quiz quiz;
 
-    @ManyToMany
+    @OneToOne
     private Question question;
 
-    @Builder.Default
+//    @Builder.Default
     @Convert(converter = NumericBooleanConverter.class)
     private Boolean isRight = false;
 
-    @Builder.Default
-    @Convert(converter = NumericBooleanConverter.class)
-    private Boolean isDeleted = false;
+//    @Builder.Default
 
     @Builder(builderMethodName = "childBuilder")
-    public QuizQuestion(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, Long createdBy, Long updatedBy, boolean deleted, Quiz quiz, Question question, Boolean isRight, Boolean isDeleted) {
+    public QuizQuestion(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, Long createdBy, Long updatedBy, boolean deleted, Quiz quiz, Question question, Boolean isRight) {
         super(id, createdAt, updatedAt, createdBy, updatedBy, deleted);
         this.quiz = quiz;
         this.question = question;
         this.isRight = isRight;
-        this.isDeleted = isDeleted;
     }
 }
