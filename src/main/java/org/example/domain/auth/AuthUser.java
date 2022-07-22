@@ -1,9 +1,6 @@
 package org.example.domain.auth;
 
-import jakarta.persistence.AttributeConverter;
-import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import lombok.*;
 import org.example.domain.Domain;
 import org.example.domain.role.LanguageEnum;
@@ -18,19 +15,21 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @ToString
 @Entity
+@Table(name = "auth_user")
 @Where(clause = "deleted = false")
-public class User extends Auditable implements Domain {
+public class AuthUser extends Auditable implements Domain {
 
     @Column(unique = true, nullable = false)
     private String username;
     @Column(nullable = false)
     private String password;
-    @Builder.Default
-    @Column(nullable = false)
-    @Convert(converter = UserRoleConverter.class)
+    //    @Builder.Default
+//    @Column(nullable = false)
+//    @Convert(converter = UserRoleConverter.class)
+    @Enumerated(EnumType.STRING)
     private UserRole role = UserRole.USER;
-    @Builder.Default
-    @Column(nullable = false)
+    //    @Builder.Default
+//    @Column(nullable = false)
     @Convert(converter = LanguageEnumConvertor.class)
     private LanguageEnum language = LanguageEnum.UZ;
 
@@ -42,7 +41,7 @@ public class User extends Auditable implements Domain {
 
 
     @Builder(builderMethodName = "childBuilder")
-    public User(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, Long createdBy, Long updatedBy, boolean deleted, String username, String password, UserRole role, LanguageEnum language, Integer isActive, Integer tryCount) {
+    public AuthUser(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, Long createdBy, Long updatedBy, boolean deleted, String username, String password, UserRole role, LanguageEnum language, Integer isActive, Integer tryCount) {
         super(id, createdAt, updatedAt, createdBy, updatedBy, deleted);
         this.username = username;
         this.password = password;

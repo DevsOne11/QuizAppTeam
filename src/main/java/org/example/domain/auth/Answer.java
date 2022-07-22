@@ -26,7 +26,7 @@ public class Answer extends Auditable implements Domain {
     @Column(nullable = false)
     private String answer;
 
-    @Builder.Default
+//    @Builder.Default
     @Convert(converter = NumericBooleanConverter.class)
     private Boolean isTrue = false;
 
