@@ -17,8 +17,8 @@ import java.util.List;
 @ToString
 @Builder
 @Entity
-@Where(clause = "deleted = false")
-public class Subject extends Auditable implements Domain {
+@Where(clause = "deleted = 0")
+public class Subject implements Domain {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

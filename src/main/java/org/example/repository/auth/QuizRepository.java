@@ -1,11 +1,14 @@
 package org.example.repository.auth;
 
 import org.example.config.HibernateConfigurer;
+import org.example.domain.auth.Answer;
 import org.example.domain.auth.Quiz;
 import org.example.repository.Repository;
 import org.example.repository.RepositoryCRUD;
+import org.example.utils.Writer;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 
 import java.util.List;
 import java.util.Optional;
@@ -44,16 +47,51 @@ public class QuizRepository implements Repository, RepositoryCRUD<
 
     @Override
     public Optional<Quiz> get(Long aLong) {
+        try {
+        Session session = sessionFactory.openSession();
+        session.getTransaction().begin();
+        Quiz quiz = session.get(Quiz.class, aLong);
+        session.getTransaction().commit();
+        session.close();
+        return Optional.of(quiz);
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
         return Optional.empty();
     }
 
     @Override
     public Optional<List<Quiz>> getAll() {
+        try {
+            Session session = sessionFactory.openSession();
+            session.getTransaction().begin();
+            List<Quiz> from_quiz_ = session.createQuery("from Quiz ", Quiz.class).getResultList();
+            session.getTransaction().commit();
+            session.close();
+            return Optional.of(from_quiz_);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         return Optional.empty();
     }
 
     @Override
     public Optional<Boolean> delete(Long aLong) {
+        try {
+            Optional<Quiz> quiz = get(aLong);
+            if (quiz.isPresent()) {
+
+                Quiz quiz1 = quiz.get();
+                quiz1.setDeleted(false);
+                Session session = sessionFactory.openSession();
+                session.getTransaction().begin();
+                session.merge(quiz1);
+                session.getTransaction().commit();
+                session.close();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         return Optional.empty();
     }
 }

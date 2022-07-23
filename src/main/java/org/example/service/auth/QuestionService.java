@@ -2,7 +2,8 @@ package org.example.service.auth;
 
 import org.example.criteria.auth.QuestionCriteria;
 import org.example.domain.auth.Question;
-import org.example.dto.auth.QuestionDto;
+import org.example.dto.quiz.QuizCreateDto;
+import org.example.dto.quiz.QuizUpdateDto;
 import org.example.response.Data;
 import org.example.response.ResponseEntity;
 import org.example.service.Service;
@@ -15,14 +16,14 @@ import java.util.List;
  * @project QuizAppTeam
  * @since 22/07/22  13:48 (Friday)
  */
-public class QuestionService implements Service, ServiceCRUD<QuestionDto,Long, QuestionCriteria, Question> {
+public class QuestionService implements Service, ServiceCRUD<QuizCreateDto, QuizUpdateDto, Long, QuestionCriteria, Question> {
     @Override
-    public ResponseEntity<Data<Boolean>> create(QuestionDto create) {
+    public ResponseEntity<Data<Boolean>> create(QuizCreateDto quizCreateDto) {
         return null;
     }
 
     @Override
-    public ResponseEntity<Data<Boolean>> update(QuestionDto update) {
+    public ResponseEntity<Data<Boolean>> update(QuizUpdateDto quizUpdateDto) {
         return null;
     }
 

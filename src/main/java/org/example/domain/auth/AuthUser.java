@@ -17,9 +17,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @ToString
 @Entity
-@Table(name = "auth_user")
 @Builder
-@Where(clause = "deleted = false")
+@Table(name = "auth_user")
+@Where(clause = "deleted = 0")
 public class AuthUser implements Domain {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,27 +46,24 @@ public class AuthUser implements Domain {
     private String username;
     @Column(nullable = false)
     private String password;
-        @Builder.Default
+    @Builder.Default
     @Column(nullable = false)
     @Convert(converter = UserRoleConverter.class)
     @Enumerated(EnumType.STRING)
     private UserRole role = UserRole.USER;
-        @Builder.Default
+    @Builder.Default
     @Column(nullable = false)
     @Convert(converter = LanguageEnumConvertor.class)
     private LanguageEnum language = LanguageEnum.UZ;
 
-    @Builder.Default
-    @Column( columnDefinition = "smallint default 1")
-    private int isActive ;
+//    @Builder.Default
+    @Column(columnDefinition = "smallint default 1")
+    private int isActive;
 
 
-    @Builder.Default
+//    @Builder.Default
     @Column(columnDefinition = "smallint default 0")
     private int tryCount;
-
-
-
 
 
     private static class UserRoleConverter implements AttributeConverter<UserRole, String> {

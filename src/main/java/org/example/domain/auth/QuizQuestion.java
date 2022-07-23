@@ -16,8 +16,8 @@ import java.time.LocalDateTime;
 @ToString
 @Entity
 @Builder
-@Where(clause = "deleted = false")
-public class QuizQuestion extends Auditable implements Domain {
+@Where(clause = "deleted = 0")
+public class QuizQuestion implements Domain {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

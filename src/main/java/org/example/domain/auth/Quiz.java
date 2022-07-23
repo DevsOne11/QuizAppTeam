@@ -1,6 +1,7 @@
 package org.example.domain.auth;
 
 import jakarta.persistence.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.*;
 import org.example.domain.Domain;
 import org.example.domain.role.LanguageEnum;
@@ -18,7 +19,7 @@ import java.util.List;
 @ToString
 @Entity
 @Builder
-@Where(clause = "deleted = false")
+@Where(clause = "deleted = 0")
 public class Quiz implements Domain {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,6 +41,7 @@ public class Quiz implements Domain {
     @Builder.Default
     @Convert(converter = NumericBooleanConverter.class)
     private boolean deleted = false;
+
     @Column(nullable = false, unique = true)
     private String quizName;
 
@@ -60,14 +62,14 @@ public class Quiz implements Domain {
     @Convert(converter = NumericBooleanConverter.class)
     private Boolean isCompleted = false;
 
-    @Builder.Default
+//    @Builder.Default
     @Column(columnDefinition = "smallint default 0")
     private int quizCount;
 
     @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = QuizQuestion.class)
     private List<QuizQuestion> quizQuestions;
 
-    @Builder.Default
+//    @Builder.Default
     @Column(columnDefinition = "smallint default 0")
     private int ball;
 

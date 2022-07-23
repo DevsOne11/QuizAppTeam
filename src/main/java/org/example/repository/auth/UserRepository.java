@@ -1,11 +1,13 @@
 package org.example.repository.auth;
 
 import org.example.config.HibernateConfigurer;
+import org.example.domain.auth.Answer;
 import org.example.domain.auth.AuthUser;
 import org.example.repository.Repository;
 import org.example.repository.RepositoryCRUD;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 
 import java.util.List;
 import java.util.Optional;
@@ -49,7 +51,7 @@ public class UserRepository implements Repository, RepositoryCRUD<
 
             Session session = sessionFactory.openSession();
             session.getTransaction().begin();
-            session.update(domain);
+            session.merge(domain);
             session.getTransaction().commit();
             session.close();
             return Optional.of(true);
@@ -61,16 +63,55 @@ public class UserRepository implements Repository, RepositoryCRUD<
 
     @Override
     public Optional<AuthUser> get(Long aLong) {
+        try {
+            Session session = sessionFactory.openSession();
+            session.getTransaction().begin();
+            Query<AuthUser> query = session.createQuery("from AuthUser t where t.id = :user_id", AuthUser.class);
+            query.setParameter("user_id",aLong);
+            AuthUser authUser = query.getSingleResult();
+
+//            AuthUser authUser = session.get(AuthUser.class, aLong);
+            session.getTransaction().commit();
+            session.close();
+            return Optional.of(authUser);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
         return Optional.empty();
     }
 
     @Override
     public Optional<List<AuthUser>> getAll() {
+        try {
+            Session session = sessionFactory.openSession();
+            session.getTransaction().begin();
+            List<AuthUser> authUser = session.createQuery("from AuthUser ", AuthUser.class).getResultList();
+            session.getTransaction().commit();
+            session.close();
+            return Optional.of(authUser);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return Optional.empty();
     }
 
     @Override
     public Optional<Boolean> delete(Long aLong) {
+        try {
+            Optional<AuthUser> authUser = get(aLong);
+            if (authUser.isPresent()) {
+                AuthUser authUser1 = authUser.get();
+                authUser1.setDeleted(true);
+                Session session = sessionFactory.openSession();
+                session.getTransaction().begin();
+                session.merge(authUser1);
+                session.getTransaction().commit();
+                session.close();
+                return Optional.of(true);
+            }
+        }  catch (Exception e){
+            e.printStackTrace();
+        }
         return Optional.empty();
     }
 }

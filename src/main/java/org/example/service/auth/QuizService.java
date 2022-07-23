@@ -3,15 +3,15 @@ package org.example.service.auth;
 import org.example.config.ApplicationContextHolder;
 import org.example.criteria.auth.QuizCriteria;
 import org.example.domain.auth.Quiz;
-import org.example.dto.auth.quiz.QuizCreateDto;
-import org.example.dto.auth.quiz.QuizUpdateDto;
+import org.example.dto.quiz.QuizCreateDto;
+import org.example.dto.quiz.QuizUpdateDto;
 import org.example.repository.auth.QuizRepository;
-import org.example.repository.auth.UserRepository;
 import org.example.response.Data;
 import org.example.response.ResponseEntity;
 import org.example.service.Service;
 import org.example.service.ServiceCRUD;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,24 +32,28 @@ public class QuizService implements Service, ServiceCRUD<
 
     @Override
     public ResponseEntity<Data<Boolean>> create(QuizCreateDto quizCreateDto) {
-        Optional<Boolean> save = quizRepository.save(Quiz.builder()
-                .createdBy(-1L)
-                .quizQuestions(quizCreateDto.getQuizQuestions())
-                .language(quizCreateDto.getLanguageEnum())
-                .level(quizCreateDto.getQuizLevel())
-                .subject_id(quizCreateDto.getSubject_id())
-                .quizName(quizCreateDto.getQuizName())
-                .build());
+       try {
+           Optional<Boolean> save = quizRepository.save(Quiz.builder()
+                   .createdBy(-1L)
+                   .quizQuestions(quizCreateDto.getQuizQuestions())
+                   .language(quizCreateDto.getLanguageEnum())
+                   .level(quizCreateDto.getQuizLevel())
+                   .subject_id(quizCreateDto.getSubject_id())
+                   .quizName(quizCreateDto.getQuizName())
+                   .build());
 
-        if (save.isPresent() && save.get().equals(true)){
-            return new ResponseEntity<>(new Data<>(true));
-        } else new ResponseEntity<>(new Data<>(Data.errorBuilder()
+           if (save.isPresent() && save.get().equals(true)) {
+               return new ResponseEntity<>(new Data<>(true));
+           }
+        } catch (Exception e){
+           e.printStackTrace();
+       }
+       return new ResponseEntity<>(new Data<>(Data.errorBuilder()
                 .friendlyMessage("failed")
                 .developerMessage("failed")
                 .code(400)
                 .build()));
 
-        return null;
     }
 
     @Override
@@ -59,16 +63,55 @@ public class QuizService implements Service, ServiceCRUD<
 
     @Override
     public ResponseEntity<Data<Quiz>> get(Long aLong) {
-        return null;
+        try {
+            Optional<Quiz> quiz = quizRepository.get(aLong);
+            if (quiz.isPresent()) {
+                return new ResponseEntity<>(new Data<>(quiz.get()));
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(new Data<>(Data.errorBuilder()
+                .friendlyMessage("failed")
+                .developerMessage("failed")
+                .code(400)
+                .build()));
     }
 
     @Override
     public ResponseEntity<Data<List<Quiz>>> getAll(QuizCriteria criteria) {
-        return null;
+      try {
+          Optional<List<Quiz>> all = quizRepository.getAll();
+          if (all.isPresent()) {
+              return new ResponseEntity<>(new Data<>(all.get()));
+          }
+      }catch (Exception e){
+          e.printStackTrace();
+      }
+        return new ResponseEntity<>(new Data<>(Data.errorBuilder()
+                .friendlyMessage("failed")
+                .developerMessage("failed")
+                .code(400)
+                .build()));
     }
 
     @Override
     public ResponseEntity<Data<Boolean>> delete(Long aLong) {
-        return null;
+        try {
+            Optional<Boolean> delete = quizRepository.delete(aLong);
+
+            if (delete.isPresent()) {
+                if (delete.get().equals(true)) {
+                    return new ResponseEntity<>(new Data<>(true));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(new Data<>(Data.errorBuilder()
+                .friendlyMessage("failed")
+                .developerMessage("failed")
+                .code(400)
+                .build()));
     }
 }

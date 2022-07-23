@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @ToString
 @Builder
 @Entity
-@Where(clause = "deleted = false")
+@Where(clause = "deleted = 0")
 public class Answer implements Domain {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,11 +37,15 @@ public class Answer implements Domain {
     private Long updatedBy;
 
 
+    private Long question_id;
     @Builder.Default
     @Convert(converter = NumericBooleanConverter.class)
     private boolean deleted = false;
+
     @ManyToOne
+    @JoinColumn(name = "question_id")
     private Question question;
+
 
     @Column(nullable = false)
     private String answer;

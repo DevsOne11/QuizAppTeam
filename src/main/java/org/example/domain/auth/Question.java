@@ -19,7 +19,7 @@ import java.util.List;
 @Builder
 @ToString
 @Entity
-@Where(clause = "deleted = false")
+@Where(clause = "deleted = 0")
 public class Question implements Domain {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,6 +38,7 @@ public class Question implements Domain {
     @Column(name = "updated_by")
     private Long updatedBy;
 
+    private Long Subject_Id;
 
     @Builder.Default
     @Convert(converter = NumericBooleanConverter.class)

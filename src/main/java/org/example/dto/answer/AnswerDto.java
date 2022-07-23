@@ -1,4 +1,4 @@
-package org.example.dto.auth;
+package org.example.dto.answer;
 
 import lombok.*;
 import org.example.domain.auth.Question;
@@ -18,7 +18,7 @@ import org.example.dto.BaseEntity;
 @NoArgsConstructor
 @ToString
 public class AnswerDto implements BaseEntity {
-    private Question question;
     private String answer;
     private Boolean isTrue = false;
+    private Long question_id;
 }

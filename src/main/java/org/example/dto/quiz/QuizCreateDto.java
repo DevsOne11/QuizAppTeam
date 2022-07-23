@@ -1,4 +1,4 @@
-package org.example.dto.auth.quiz;
+package org.example.dto.quiz;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
