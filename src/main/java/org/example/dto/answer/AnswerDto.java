@@ -1,7 +1,6 @@
 package org.example.dto.answer;
 
 import lombok.*;
-import org.example.domain.auth.Question;
 import org.example.dto.BaseEntity;
 
 /**

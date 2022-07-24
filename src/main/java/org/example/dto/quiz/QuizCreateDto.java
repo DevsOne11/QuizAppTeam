@@ -21,4 +21,5 @@ public class QuizCreateDto implements BaseEntity {
     private LanguageEnum languageEnum;
     private Integer quizCount;
     private List<QuizQuestion> quizQuestions;
+    private Long created_by;
 }

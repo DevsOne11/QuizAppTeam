@@ -30,6 +30,21 @@ public class UserService implements Service, ServiceCRUD<
         return instance;
     }
 
+    public ResponseEntity<Data<AuthUser>> login(String username, String password){
+      try {
+          Optional<AuthUser> login = userRepository.login(username, password);
+
+          if (login.isPresent()) {
+              return new ResponseEntity<>(new Data<>(login.get()));
+          }
+      }catch (Exception e){
+          e.printStackTrace();
+      }
+        return new ResponseEntity<>(new Data<>(Data.errorBuilder()
+                .friendlyMessage("failed")
+                .build()), 404);
+    }
+
 
     @Override
     public ResponseEntity<Data<Boolean>> create(UserCreateDto userCreateDto) {

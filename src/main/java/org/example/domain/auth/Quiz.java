@@ -1,7 +1,6 @@
 package org.example.domain.auth;
 
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.*;
 import org.example.domain.Domain;
 import org.example.domain.role.LanguageEnum;

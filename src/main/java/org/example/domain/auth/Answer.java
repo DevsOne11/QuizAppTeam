@@ -43,7 +43,7 @@ public class Answer implements Domain {
     private boolean deleted = false;
 
     @ManyToOne
-    @JoinColumn(name = "question_id")
+    @JoinColumn(name = "question_id_")
     private Question question;
 
 

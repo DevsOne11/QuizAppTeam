@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 @Entity
 @Builder
 @Table(name = "auth_user")
-@Where(clause = "deleted = 0")
+@Where(clause = "deleted = 0 and is_active = 0")
 public class AuthUser implements Domain {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,7 +57,7 @@ public class AuthUser implements Domain {
     private LanguageEnum language = LanguageEnum.UZ;
 
 //    @Builder.Default
-    @Column(columnDefinition = "smallint default 1")
+    @Column(name = "is_active",columnDefinition = "smallint default 1")
     private int isActive;
 
 

@@ -1,39 +1,34 @@
 package org.example.repository.auth;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.example.config.HibernateConfigurer;
-import org.example.domain.auth.Answer;
-import org.example.domain.auth.Question;
+import org.example.domain.auth.Subject;
 import org.example.repository.Repository;
 import org.example.repository.RepositoryCRUD;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * @author Shoniyazova Matlyuba
- * @project QuizAppTeam
- * @since 22/07/22  13:45 (Friday)
- */
-public class QuestionRepository  implements Repository, RepositoryCRUD<Long, Question> {
-    private QuestionRepository() {
-    }
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class SubjectRepository implements Repository, RepositoryCRUD<
+        Long, Subject> {
 
-    private final SessionFactory sessionFactory = HibernateConfigurer.getSessionFactory();
-    private static QuestionRepository instance;
+    private SessionFactory sessionFactory = HibernateConfigurer.getSessionFactory();
 
-    public static QuestionRepository getInstance() {
+    private static SubjectRepository instance;
+
+    public static SubjectRepository getInstance() {
         if (instance == null) {
-            instance = new QuestionRepository();
+            instance = new SubjectRepository();
         }
         return instance;
     }
 
-
     @Override
-    public Optional<Boolean> save(Question domain) {
+    public Optional<Boolean> save(Subject domain) {
         try {
             Session session = sessionFactory.openSession();
             session.getTransaction().begin();
@@ -41,14 +36,14 @@ public class QuestionRepository  implements Repository, RepositoryCRUD<Long, Que
             session.getTransaction().commit();
             session.close();
             return Optional.of(true);
-        }catch (Exception e){
+        } catch (Exception e){
             e.printStackTrace();
         }
         return Optional.empty();
     }
 
     @Override
-    public Optional<Boolean> update(Question domain) {
+    public Optional<Boolean> update(Subject domain) {
         try {
             Session session = sessionFactory.openSession();
             session.getTransaction().begin();
@@ -56,6 +51,21 @@ public class QuestionRepository  implements Repository, RepositoryCRUD<Long, Que
             session.getTransaction().commit();
             session.close();
             return Optional.of(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Subject> get(Long aLong) {
+        try {
+            Session session = sessionFactory.openSession();
+            session.getTransaction().begin();
+            Subject subject = session.get(Subject.class, aLong);
+            session.getTransaction().commit();
+            session.close();
+            return Optional.of(subject);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -63,30 +73,15 @@ public class QuestionRepository  implements Repository, RepositoryCRUD<Long, Que
     }
 
     @Override
-    public Optional<Question> get(Long aLong) {
+    public Optional<List<Subject>> getAll() {
         try {
             Session session = sessionFactory.openSession();
             session.getTransaction().begin();
-            Question question = session.get(Question.class, aLong);
+            List<Subject> from_subject_ = session.createQuery("from Subject ", Subject.class).getResultList();
             session.getTransaction().commit();
             session.close();
-            return Optional.of(question);
+            return Optional.of(from_subject_);
         }catch (Exception e){
-            e.printStackTrace();
-        }
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<List<Question>> getAll() {
-        try {
-            Session session = sessionFactory.openSession();
-            session.getTransaction().begin();
-            List<Question> from_question_ = session.createQuery("from Question ", Question.class).getResultList();
-            session.getTransaction().commit();
-            session.close();
-            return Optional.of(from_question_);
-        } catch (Exception e){
             e.printStackTrace();
         }
         return Optional.empty();
@@ -95,18 +90,18 @@ public class QuestionRepository  implements Repository, RepositoryCRUD<Long, Que
     @Override
     public Optional<Boolean> delete(Long aLong) {
         try {
-            Optional<Question> question = get(aLong);
-            if (question.isPresent()) {
-                Question question1 = question.get();
-                question1.setDeleted(true);
+            Optional<Subject> subject = get(aLong);
+            if (subject.isPresent()) {
+                Subject subject1 = subject.get();
+                subject1.setDeleted(true);
                 Session session = sessionFactory.openSession();
                 session.getTransaction().begin();
-                session.merge(question1);
+                session.merge(subject1);
                 session.getTransaction().commit();
                 session.close();
                 return Optional.of(true);
             }
-        }catch ( Exception e){
+        } catch (Exception e){
             e.printStackTrace();
         }
         return Optional.empty();

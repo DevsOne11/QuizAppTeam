@@ -1,10 +1,8 @@
 package org.example.dto.auth;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import org.example.domain.role.LanguageEnum;
-import org.example.dto.BaseEntity;
 import org.example.dto.GenericEntity;
 
 @Getter

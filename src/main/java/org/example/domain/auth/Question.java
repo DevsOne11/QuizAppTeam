@@ -38,7 +38,9 @@ public class Question implements Domain {
     @Column(name = "updated_by")
     private Long updatedBy;
 
-    private Long Subject_Id;
+
+    @Column(name = "subject_id_")
+    private Long subject_id;
 
     @Builder.Default
     @Convert(converter = NumericBooleanConverter.class)
@@ -60,7 +62,7 @@ public class Question implements Domain {
     @Convert(converter = Quiz.LanguageEnumConvertor.class)
     private LanguageEnum language = LanguageEnum.UZ;
 
-    @OneToMany(mappedBy = "question")
-    private List<Answer> answers;
+//    @OneToMany(mappedBy = "question", fetch = FetchType.EAGER)
+//    private List<Answer> answers;
 
 }

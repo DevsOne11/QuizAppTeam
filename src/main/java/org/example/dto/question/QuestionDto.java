@@ -1,11 +1,11 @@
 package org.example.dto.question;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
 import org.example.domain.auth.Answer;
 import org.example.domain.auth.Subject;
 import org.example.domain.role.LanguageEnum;
 import org.example.domain.role.QuizLevel;
-import org.example.dto.BaseEntity;
 import org.example.dto.GenericEntity;
 
 import java.util.List;

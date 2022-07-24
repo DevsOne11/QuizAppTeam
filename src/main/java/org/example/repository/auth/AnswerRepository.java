@@ -7,7 +7,6 @@ import org.example.repository.RepositoryCRUD;
 import org.example.utils.Writer;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
 
 import java.util.List;
 import java.util.Optional;

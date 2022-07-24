@@ -1,11 +1,7 @@
 package org.example.config;
 
-import org.example.repository.auth.AnswerRepository;
-import org.example.repository.auth.QuizRepository;
-import org.example.repository.auth.UserRepository;
-import org.example.service.auth.AnswerService;
-import org.example.service.auth.QuizService;
-import org.example.service.auth.UserService;
+import org.example.repository.auth.*;
+import org.example.service.auth.*;
 
 public class ApplicationContextHolder {
 
@@ -18,6 +14,10 @@ public class ApplicationContextHolder {
             case "QuizRepository" -> (T) QuizRepository.getInstance();
             case "AnswerService" -> (T) AnswerService.getInstance();
             case "AnswerRepository" -> (T) AnswerRepository.getInstance();
+            case "QuestionService" -> (T) QuestionService.getInstance();
+            case "QuestionRepository" -> (T) QuestionRepository.getInstance();
+            case "SubjectService" -> (T) SubjectService.getInstance();
+            case "SubjectRepository" -> (T) SubjectRepository.getInstance();
 
             default -> throw new RuntimeException("Bean Not Found");
         };

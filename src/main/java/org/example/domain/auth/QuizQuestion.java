@@ -8,6 +8,7 @@ import org.hibernate.annotations.Where;
 import org.hibernate.type.NumericBooleanConverter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -43,8 +44,13 @@ public class QuizQuestion implements Domain {
     @ManyToOne
     private Quiz quiz;
 
-    @OneToOne
-    private Question question;
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
+            name = "quiz_question_question",
+            joinColumns = { @JoinColumn(name = "quiz_question_id") },
+            inverseJoinColumns = { @JoinColumn(name = "question_id") }
+    )
+    private List<Question> question;
 
     @Builder.Default
     @Convert(converter = NumericBooleanConverter.class)

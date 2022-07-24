@@ -1,7 +1,6 @@
 package org.example.repository.auth;
 
 import org.example.config.HibernateConfigurer;
-import org.example.domain.auth.Answer;
 import org.example.domain.auth.AuthUser;
 import org.example.repository.Repository;
 import org.example.repository.RepositoryCRUD;
@@ -29,6 +28,23 @@ public class UserRepository implements Repository, RepositoryCRUD<
         return instance;
     }
 
+
+    public Optional<AuthUser> login(String username, String password){
+        try {
+            Session session = sessionFactory.openSession();
+            session.getTransaction().begin();
+            Query<AuthUser> query = session.createQuery("select t from AuthUser t where t.username = :_username and t.password = :_password", AuthUser.class);
+            query.setParameter("_username", username);
+            query.setParameter("_password", password);
+            AuthUser singleResult = query.getSingleResult();
+            session.getTransaction().commit();
+            session.close();
+            return Optional.of(singleResult);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return Optional.empty();
+    }
 
     @Override
     public Optional<Boolean> save(AuthUser domain) {

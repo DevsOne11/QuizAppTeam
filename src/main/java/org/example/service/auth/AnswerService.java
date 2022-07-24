@@ -20,7 +20,7 @@ import java.util.Optional;
 public class AnswerService implements Service, ServiceCRUD<
         AnswerCreateDto, AnswerUpdateDto, Long, AnswerCriteria, Answer> {
 
-private AnswerRepository answerRepository = ApplicationContextHolder.getBean(AnswerRepository.class);
+    private AnswerRepository answerRepository = ApplicationContextHolder.getBean(AnswerRepository.class);
     private static AnswerService instance;
 
     public static AnswerService getInstance() {
@@ -33,18 +33,20 @@ private AnswerRepository answerRepository = ApplicationContextHolder.getBean(Ans
     @Override
     public ResponseEntity<Data<Boolean>> create(AnswerCreateDto answerCreateDto) {
         try {
-            Optional<Boolean> save = answerRepository.save(Answer.builder()
-                    .answer(answerCreateDto.getAnswer())
-                    .createdBy(answerCreateDto.getCreated_by())
-                    .isTrue(answerCreateDto.getIsTrue())
-                    .build());
 
-            if (save.isPresent()) {
-                if (save.get().equals(true)){
-                    return new ResponseEntity<>(new Data<>(true));
-                }
-            }
-        } catch (Exception e){
+                    Optional<Boolean> save = answerRepository.save(Answer.builder()
+                            .answer(answerCreateDto.getAnswer())
+                            .createdBy(answerCreateDto.getCreated_by())
+                            .question_id(answerCreateDto.getQuestion_id())
+                            .isTrue(answerCreateDto.getIsTrue())
+                            .build());
+
+                    if (save.isPresent()) {
+                        if (save.get().equals(true)) {
+                            return new ResponseEntity<>(new Data<>(true));
+                        }
+                    }
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -57,22 +59,21 @@ private AnswerRepository answerRepository = ApplicationContextHolder.getBean(Ans
     @Override
     public ResponseEntity<Data<Boolean>> update(AnswerUpdateDto answerUpdateDto) {
         try {
-
-            ResponseEntity<Data<Answer>> dataResponseEntity = get(answerUpdateDto.getId());
-            if (dataResponseEntity.getData().getIsOK().equals(true)) {
-                Answer body = dataResponseEntity.getData().getBody();
-                body.setAnswer(answerUpdateDto.getAnswer());
-                body.setIsTrue(answerUpdateDto.getIsTrue());
-                body.setUpdatedBy(answerUpdateDto.getUpdated_by());
-                Optional<Boolean> update = answerRepository.update(body);
-                if (update.isPresent()) {
-                    if (update.get().equals(true)) {
-                        return new ResponseEntity<>(new Data<>(true));
-                    }
-                }
+                    ResponseEntity<Data<Answer>> dataResponseEntity = get(answerUpdateDto.getId());
+                    if (dataResponseEntity.getData().getIsOK().equals(true)) {
+                        Answer body = dataResponseEntity.getData().getBody();
+                        body.setAnswer(answerUpdateDto.getAnswer());
+                        body.setIsTrue(answerUpdateDto.getIsTrue());
+                        body.setUpdatedBy(answerUpdateDto.getUpdated_by());
+                        Optional<Boolean> update = answerRepository.update(body);
+                        if (update.isPresent()) {
+                            if (update.get().equals(true)) {
+                                return new ResponseEntity<>(new Data<>(true));
+                            }
+                        }
             }
 
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return new ResponseEntity<>(new Data<>(Data.errorBuilder()
@@ -88,7 +89,7 @@ private AnswerRepository answerRepository = ApplicationContextHolder.getBean(Ans
             if (answer.isPresent()) {
                 return new ResponseEntity<>(new Data<>(answer.get()));
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return new ResponseEntity<>(new Data<>(Data.errorBuilder()
@@ -104,7 +105,7 @@ private AnswerRepository answerRepository = ApplicationContextHolder.getBean(Ans
             if (all.isPresent()) {
                 return new ResponseEntity<>(new Data<>(all.get()));
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return new ResponseEntity<>(new Data<>(Data.errorBuilder()
@@ -118,11 +119,11 @@ private AnswerRepository answerRepository = ApplicationContextHolder.getBean(Ans
         try {
             Optional<Boolean> delete = answerRepository.delete(aLong);
             if (delete.isPresent()) {
-                if (delete.get().equals(true)){
+                if (delete.get().equals(true)) {
                     return new ResponseEntity<>(new Data<>(true));
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return new ResponseEntity<>(new Data<>(Data.errorBuilder()

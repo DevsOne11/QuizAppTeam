@@ -16,4 +16,5 @@ public class UserCreateDto implements BaseEntity {
     private String password;
     private UserRole role;
     private LanguageEnum language;
+    private Long created_by;
 }
