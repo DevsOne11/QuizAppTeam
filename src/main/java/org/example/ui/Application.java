@@ -139,10 +139,11 @@ public class Application {
                 .isTrue(Boolean.TRUE)
                 .build();
 
-        Answer answer2 = Answer.builder()
-                .answer(Reader.readLine("2. Answer : Enter incorrect answer: "))
-                .createdBy(Session.sessionUser.getId())
-                .isTrue(Boolean.FALSE)
+        Answer.AnswerBuilder builder = Answer.builder();
+        builder.answer(Reader.readLine("2. Answer : Enter incorrect answer: "));
+        builder.createdBy(Session.sessionUser.getId());
+        builder.isTrue(Boolean.FALSE);
+        Answer answer2 = builder
                 .build();
 
 
