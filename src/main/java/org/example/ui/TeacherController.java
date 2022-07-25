@@ -49,7 +49,7 @@ public class TeacherController {
     }
 
     private static void questionCrud() {
-
+        Application.questionCreate();
     }
 
 

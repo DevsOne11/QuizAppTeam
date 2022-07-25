@@ -50,6 +50,6 @@ public class Subject implements Domain {
 
     private String description;
 
-    @OneToMany(mappedBy = "subject")
-    private List<Question> questions;
+//    @OneToMany(mappedBy = "subject")
+//    private List<Question> questions;
 }

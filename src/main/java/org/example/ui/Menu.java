@@ -5,7 +5,6 @@ import org.example.domain.auth.AuthUser;
 import org.example.domain.role.UserRole;
 import org.example.dto.auth.UserCreateDto;
 import org.example.dto.auth.UserDto;
-import org.example.repository.auth.UserRepository;
 import org.example.response.Data;
 import org.example.response.ResponseEntity;
 import org.example.service.auth.UserService;
@@ -45,6 +44,7 @@ public class Menu {
         if (login.getData().getIsOK().equals(true)) {
             AuthUser body = login.getData().getBody();
             UserDto build = UserDto.builder()
+                    .id(body.getId())
                     .username(body.getUsername())
                     .password(body.getPassword())
                     .role(body.getRole())

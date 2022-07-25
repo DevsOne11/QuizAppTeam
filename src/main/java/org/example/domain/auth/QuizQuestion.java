@@ -44,13 +44,15 @@ public class QuizQuestion implements Domain {
     @ManyToOne
     private Quiz quiz;
 
-    @ManyToMany(cascade = { CascadeType.ALL })
-    @JoinTable(
-            name = "quiz_question_question",
-            joinColumns = { @JoinColumn(name = "quiz_question_id") },
-            inverseJoinColumns = { @JoinColumn(name = "question_id") }
-    )
-    private List<Question> question;
+//    @ManyToMany(cascade = { CascadeType.ALL })
+//    @JoinTable(
+//            name = "quiz_question_question",
+//            joinColumns = { @JoinColumn(name = "quiz_question_id") },
+//            inverseJoinColumns = { @JoinColumn(name = "question_id") }
+//    )
+//    private List<Question> question;
+
+    private Long question_id;
 
     @Builder.Default
     @Convert(converter = NumericBooleanConverter.class)

@@ -65,8 +65,8 @@ public class Quiz implements Domain {
     @Column(columnDefinition = "smallint default 0")
     private int quizCount;
 
-    @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = QuizQuestion.class)
-    private List<QuizQuestion> quizQuestions;
+//    @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = QuizQuestion.class)
+//    private List<QuizQuestion> quizQuestions;
 
 //    @Builder.Default
     @Column(columnDefinition = "smallint default 0")

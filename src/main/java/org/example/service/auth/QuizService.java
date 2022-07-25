@@ -3,6 +3,9 @@ package org.example.service.auth;
 import org.example.config.ApplicationContextHolder;
 import org.example.criteria.auth.QuizCriteria;
 import org.example.domain.auth.Quiz;
+import org.example.domain.auth.Subject;
+import org.example.domain.role.LanguageEnum;
+import org.example.domain.role.QuizLevel;
 import org.example.dto.quiz.QuizCreateDto;
 import org.example.dto.quiz.QuizUpdateDto;
 import org.example.repository.auth.QuizRepository;
@@ -33,12 +36,13 @@ public class QuizService implements Service, ServiceCRUD<
     public ResponseEntity<Data<Boolean>> create(QuizCreateDto quizCreateDto) {
        try {
            Optional<Boolean> save = quizRepository.save(Quiz.builder()
-                   .createdBy(-1L)
-                   .quizQuestions(quizCreateDto.getQuizQuestions())
+                   .createdBy(quizCreateDto.getCreated_by())
+//                   .quizQuestions(quizCreateDto.getQuizQuestions())
                    .language(quizCreateDto.getLanguageEnum())
                    .level(quizCreateDto.getQuizLevel())
                    .subject_id(quizCreateDto.getSubject_id())
                    .quizName(quizCreateDto.getQuizName())
+                   .quizCount(quizCreateDto.getQuizCount())
                    .build());
 
            if (save.isPresent() && save.get().equals(true)) {

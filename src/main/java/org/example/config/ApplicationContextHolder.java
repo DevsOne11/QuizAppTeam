@@ -18,6 +18,7 @@ public class ApplicationContextHolder {
             case "QuestionRepository" -> (T) QuestionRepository.getInstance();
             case "SubjectService" -> (T) SubjectService.getInstance();
             case "SubjectRepository" -> (T) SubjectRepository.getInstance();
+            case "QuizQuestionRepository" -> (T) QuizQuestionRepository.getInstance();
 
             default -> throw new RuntimeException("Bean Not Found");
         };

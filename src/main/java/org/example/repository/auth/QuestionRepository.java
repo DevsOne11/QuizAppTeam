@@ -47,6 +47,14 @@ public class QuestionRepository  implements Repository, RepositoryCRUD<Long, Que
         return Optional.empty();
     }
 
+    public  Question  getLast(){
+        Session session = sessionFactory.openSession();
+        session.getTransaction().begin();
+        Question singleResult = session.createQuery("select t from Question t order by t.id desc", Question.class).setMaxResults(1).getSingleResult();
+        session.getTransaction().commit();
+        session.close();
+        return singleResult;
+    }
     @Override
     public Optional<Boolean> update(Question domain) {
         try {

@@ -64,5 +64,4 @@ public class Question implements Domain {
 
 //    @OneToMany(mappedBy = "question", fetch = FetchType.EAGER)
 //    private List<Answer> answers;
-
 }

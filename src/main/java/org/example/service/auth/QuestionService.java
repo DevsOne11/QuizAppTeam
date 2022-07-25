@@ -10,6 +10,7 @@ import org.example.dto.question.QuestionCreateDto;
 import org.example.dto.question.QuestionUpdateDto;
 import org.example.dto.quiz.QuizCreateDto;
 import org.example.dto.quiz.QuizUpdateDto;
+import org.example.repository.auth.AnswerRepository;
 import org.example.repository.auth.QuestionRepository;
 import org.example.response.Data;
 import org.example.response.ResponseEntity;
@@ -30,6 +31,7 @@ public class QuestionService implements Service, ServiceCRUD<QuestionCreateDto, 
     private static QuestionService instance;
 
     private QuestionRepository questionRepository = ApplicationContextHolder.getBean(QuestionRepository.class);
+    private AnswerRepository answerRepository = ApplicationContextHolder.getBean(AnswerRepository.class);
 
     public static QuestionService getInstance() {
         if (instance == null) {
@@ -42,17 +44,28 @@ public class QuestionService implements Service, ServiceCRUD<QuestionCreateDto, 
     public ResponseEntity<Data<Boolean>> create(QuestionCreateDto questionCreateDto) {
         try {
 
+            List<Answer> answers = questionCreateDto.getAnswers();
             Optional<Boolean> save = questionRepository.save(Question.builder()
                     .subject_id(questionCreateDto.getSubject_id())
                     .question(questionCreateDto.getQuestion())
                     .createdBy(questionCreateDto.getCreated_by())
                     .level(questionCreateDto.getLevel())
                     .language(questionCreateDto.getLanguage())
-//                    .answers(questionCreateDto.getAnswers())
+//                    .answers(answers)
                     .build());
+
+            Question last = questionRepository.getLast();
 
             if (save.isPresent()) {
                 if (save.get().equals(true)) {
+                    for (Answer answer : answers) {
+                        answer.setQuestion_id(last.getId());
+                        answer.setQuestion(last);
+                        Optional<Boolean> save1 = answerRepository.save(answer);
+                        if (save1.isEmpty()) {
+                            throw new RuntimeException();
+                        }
+                    }
                     return new ResponseEntity<>(new Data<>(true));
                 }
             }

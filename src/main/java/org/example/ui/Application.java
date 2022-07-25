@@ -70,16 +70,16 @@ public class Application {
 
     public static void subjectCreate() {
 
-            ResponseEntity<Data<Boolean>> dataResponseEntity1 = subjectService.create(SubjectCreateDto.builder()
-                    .created_by(Session.sessionUser.getId())
-                    .code(Reader.readLine("code: "))
-                    .name(Reader.readLine("Subject: "))
-                    .description(Reader.readLine("description: "))
-                    .build());
+        ResponseEntity<Data<Boolean>> dataResponseEntity1 = subjectService.create(SubjectCreateDto.builder()
+                .created_by(Session.sessionUser.getId())
+                .code(Reader.readLine("code: "))
+                .name(Reader.readLine("Subject: "))
+                .description(Reader.readLine("description: "))
+                .build());
 
-            if (dataResponseEntity1.getData().getIsOK().equals(true)) {
-                Writer.println(dataResponseEntity1.getData().getBody());
-            } else Writer.println(dataResponseEntity1.getData().getErrorDto().getFriendlyMessage());
+        if (dataResponseEntity1.getData().getIsOK().equals(true)) {
+            Writer.println(dataResponseEntity1.getData().getBody());
+        } else Writer.println(dataResponseEntity1.getData().getErrorDto().getFriendlyMessage());
     }
 
     public static void questionGetAll() {
@@ -97,7 +97,7 @@ public class Application {
     }
 
     public static void questionGet() {
-        ResponseEntity<Data<Question>> dataResponseEntity = questionService.get(1L);
+        ResponseEntity<Data<Question>> dataResponseEntity = questionService.get(11L);
         if (dataResponseEntity.getData().getIsOK().equals(true)) {
             Writer.println(dataResponseEntity.getData().getBody());
         } else Writer.println(dataResponseEntity.getData().getErrorDto().getFriendlyMessage());
@@ -169,9 +169,18 @@ public class Application {
             Long subject_id = 0L;
             for (int i = 0; i < body.size(); i++) {
                 if (body.get(i).getName().contains(enter_subject_name)) {
+                    Writer.println(body.get(i).getName());
                     switch (Reader.readLine("y/n:  ?")) {
-                        case "y" -> subject_id = body.get(i).getId();
-                        case "n" -> i++;
+                        case "y": {
+                            subject_id = body.get(i).getId();
+                            break;
+                        }
+                        case "n": {
+                            continue;
+                        }
+                        default:
+                            subject_id = body.get(i).getId();
+                            break;
                     }
                 }
 
@@ -185,7 +194,7 @@ public class Application {
             }
 
         }
-        throw new RuntimeException();
+        return null;
     }
 
     public static QuizLevel chooseLevel() {
@@ -354,6 +363,7 @@ public class Application {
 
     public static void subjectUpdate() {
         ResponseEntity<Data<Boolean>> update = subjectService.update(SubjectUpdateDto.builder()
+                .id(Reader.readLong("id: "))
                 .updated_by(Session.sessionUser.getId())
                 .name(Reader.readLine("subject: "))
                 .description(Reader.readLine("description: "))

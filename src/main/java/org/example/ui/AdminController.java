@@ -8,7 +8,7 @@ public class AdminController {
                 "2 -> user crud\n" +
                 "3 -> History (all quizzes)" +
                 "\n" +
-                "4 -> log out" +
+                "4 -> log out\n" +
                 "q -> quit")){
             case "1" -> subjectCrud();
             case "2"  -> userCrud();

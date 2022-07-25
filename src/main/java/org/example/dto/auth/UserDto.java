@@ -6,12 +6,14 @@ import lombok.Setter;
 import lombok.ToString;
 import org.example.domain.role.LanguageEnum;
 import org.example.domain.role.UserRole;
+import org.example.dto.BaseEntity;
 import org.example.dto.GenericEntity;
 
 @Getter
 @Setter
 @ToString
-public class UserDto extends GenericEntity {
+public class UserDto implements BaseEntity {
+    public Long id;
     private String username;
     private String password;
     private UserRole role;
@@ -20,7 +22,7 @@ public class UserDto extends GenericEntity {
 
     @Builder
     public UserDto(Long id, String username, String password, UserRole role, LanguageEnum language) {
-        super(id);
+        this.id=id;
         this.username = username;
         this.password = password;
         this.role = role;

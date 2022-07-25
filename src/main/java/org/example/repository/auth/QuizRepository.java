@@ -1,6 +1,7 @@
 package org.example.repository.auth;
 
 import org.example.config.HibernateConfigurer;
+import org.example.domain.auth.Question;
 import org.example.domain.auth.Quiz;
 import org.example.repository.Repository;
 import org.example.repository.RepositoryCRUD;
@@ -39,6 +40,16 @@ public class QuizRepository implements Repository, RepositoryCRUD<
 
     @Override
     public Optional<Boolean> update(Quiz domain) {
+        try {
+            Session session = sessionFactory.openSession();
+            session.getTransaction().begin();
+            session.merge(domain);
+            session.getTransaction().commit();
+            session.close();
+            return Optional.of(true);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         return Optional.empty();
     }
 
@@ -90,5 +101,14 @@ public class QuizRepository implements Repository, RepositoryCRUD<
             e.printStackTrace();
         }
         return Optional.empty();
+    }
+
+    public Quiz getLast(){
+        Session session = sessionFactory.openSession();
+        session.getTransaction().begin();
+        Quiz singleResult = session.createQuery("select t from Quiz t order by t.id desc", Quiz.class).setMaxResults(1).getSingleResult();
+        session.getTransaction().commit();
+        session.close();
+        return singleResult;
     }
 }
