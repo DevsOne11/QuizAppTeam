@@ -24,6 +24,7 @@ import org.hibernate.sql.exec.ExecutionException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Application {
     private static final QuizService quizService = ApplicationContextHolder.getBean(QuizService.class);
@@ -117,15 +118,21 @@ public class Application {
     }
 
     public static void questionCreate() {
-        ResponseEntity<Data<Boolean>> dataResponseEntity = questionService.create(QuestionCreateDto
+        QuestionCreateDto build = QuestionCreateDto
                 .builder()
                 .created_by(Session.sessionUser.getId())
                 .question(Reader.readLine("question: "))
                 .language(chooseLanguage())
                 .level(chooseLevel())
-                .subject_id(chooseSubjectId())
                 .answers(createAnswersToQuestion())
-                .build());
+                .build();
+        Long aLong = chooseSubjectId();
+        if (Objects.isNull(aLong)){
+            Writer.println("Subject not found");
+            return;
+        }
+        build.setSubject_id(aLong);
+        ResponseEntity<Data<Boolean>> dataResponseEntity = questionService.create(build);
         if (dataResponseEntity.getData().getIsOK().equals(true)) {
             Writer.println(dataResponseEntity.getData().getBody());
         } else Writer.println(dataResponseEntity.getData().getErrorDto().getFriendlyMessage());
