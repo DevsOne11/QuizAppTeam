@@ -30,20 +30,23 @@ public class UserController {
     private static final QuestionRepository questionRepositories = ApplicationContextHolder.getBean(QuestionRepository.class);
 
     public static void controller() {
-        switch (Reader.readLine("\n\n1 -> solve quiz\n" +
-                "=================================\n" +
-                "2 -> update\n" +
-                "3 -> get\n" +
-                "4 -> delete\n" +
-                "5 -> log out\n" +
-                "q -> Quit")) {
-            case "1" -> solveQuiz();
-            case "2" -> TeacherController.update_();
-            case "3" -> TeacherController.get();
-            case "4" -> TeacherController.delete();
-            case "5" -> Session.setSessionUser(null);
-            case "q" -> {
-                break;
+        while (true) {
+            switch (Reader.readLine("\n\n1 -> solve quiz\n" +
+                    "=================================\n" +
+                    "2 -> update\n" +
+                    "3 -> get\n" +
+                    "4 -> delete\n" +
+                    "5 -> log out\n" +
+                    "q -> Quit")) {
+                case "1" -> solveQuiz();
+                case "2" -> TeacherController.update_();
+                case "3" -> TeacherController.get();
+                case "4" -> TeacherController.delete();
+                case "5" -> {Session.setSessionUser(null);
+                    return;}
+                case "q" -> {
+                   return;
+                }
             }
         }
     }

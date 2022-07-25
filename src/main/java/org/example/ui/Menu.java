@@ -14,13 +14,24 @@ import org.example.utils.Writer;
 public class Menu {
     private static final UserService userService = ApplicationContextHolder.getBean(UserService.class);
     public static void controller(){
-        switch (Reader.readLine("1 -> Login\n" +
-                "2 -> Register\n" +
-                "q -> Quit")){
-            case "1" :{ login(); break;}
-            case "2" :{ register_(); break;}
-            case "q" :{ System.exit(1);}
-            default : controller();
+        while (true) {
+            switch (Reader.readLine("1 -> Login\n" +
+                    "2 -> Register\n" +
+                    "q -> Quit")) {
+                case "1": {
+                    login();
+                    break;
+                }
+                case "2": {
+                    register_();
+                    break;
+                }
+                case "q": {
+                    System.exit(1);
+                }
+                default:
+                    Writer.println("wrong choice");
+            }
         }
     }
 

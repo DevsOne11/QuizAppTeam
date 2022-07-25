@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static org.example.utils.Color.BLUE;
+
 public class Application {
     private static final QuizService quizService = ApplicationContextHolder.getBean(QuizService.class);
     private static final UserService userService = ApplicationContextHolder.getBean(UserService.class);
@@ -58,7 +60,7 @@ public class Application {
 
 
         ////////// question /////////
-//        questionCreate();
+        questionCreate();
 //        questionUpdate();
 //        questionGet();
 //        questionDelete();
@@ -86,7 +88,8 @@ public class Application {
     public static void questionGetAll() {
         ResponseEntity<Data<List<Question>>> all = questionService.getAll(new QuestionCriteria());
         if (all.getData().getIsOK().equals(true)) {
-            Writer.println(all.getData().getBody());
+            Writer<Question> questionWriter = new Writer<>();
+            questionWriter.print(all);
         } else Writer.println(all.getData().getErrorDto().getFriendlyMessage());
     }
 
@@ -127,7 +130,7 @@ public class Application {
                 .answers(createAnswersToQuestion())
                 .build();
         Long aLong = chooseSubjectId();
-        if (Objects.isNull(aLong)){
+        if (Objects.isNull(aLong)) {
             Writer.println("Subject not found");
             return;
         }
@@ -177,17 +180,15 @@ public class Application {
             for (int i = 0; i < body.size(); i++) {
                 if (body.get(i).getName().contains(enter_subject_name)) {
                     Writer.println(body.get(i).getName());
-                    switch (Reader.readLine("y/n:  ?")) {
-                        case "y": {
-                            subject_id = body.get(i).getId();
-                            break;
-                        }
-                        case "n": {
-                            continue;
-                        }
-                        default:
-                            subject_id = body.get(i).getId();
-                            break;
+                    String s = Reader.readLine("y/n:  ?");
+                    if (s.equalsIgnoreCase("y")) {
+                        subject_id = body.get(i).getId();
+                        break;
+                    } else if (s.equalsIgnoreCase("n")) {
+                        continue;
+                    } else {
+                        subject_id = body.get(i).getId();
+                        break;
                     }
                 }
 

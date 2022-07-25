@@ -17,14 +17,15 @@ public class TeacherController {
                 "2 -> options\n" +
                 "3 -> History (all quizzes)" +
                 "\n" +
-                "o -> log out" +
+                "4 -> log out\n" +
                 "q -> quit")) {
             case "1" -> questionCrud();
             case "2" -> optionsCrud();
             case "3" -> history();
-            case "o" -> Session.setSessionUser(null);
-            case "q" -> System.exit(0);
-            default -> controller();
+            case "4" -> {Session.setSessionUser(null);
+            return;}
+            case "q" -> {return;}
+            default -> Writer.println("wrong choice");
         }
     }
 
@@ -33,23 +34,39 @@ public class TeacherController {
     }
 
     private static void optionsCrud() {
-        switch (Reader.readLine("1 -> update\n" +
-                "2 -> get\n" +
-                "3 -> delete)" +
-                "\n" +
-                "o -> log out" +
-                "q -> quit")) {
-            case "1" -> update_();
-            case "2" -> get();
-            case "3" -> delete();
-            case "o" -> Session.setSessionUser(null);
-            case "q" -> System.exit(0);
-            default -> optionsCrud();
+        while (true) {
+            switch (Reader.readLine("1 -> update\n" +
+                    "2 -> get\n" +
+                    "3 -> delete)" +
+                    "\n" +
+                    "o -> log out\n" +
+                    "q -> quit")) {
+                case "1" -> update_();
+                case "2" -> get();
+                case "3" -> delete();
+                case "o" -> Session.setSessionUser(null);
+                case "q" -> System.exit(0);
+                default -> {return;}
+            }
         }
     }
 
     private static void questionCrud() {
-        Application.questionCreate();
+        while (true) {
+            switch (Reader.readLine("1 -> question create\n" +
+                    "2 -> questions get\n" +
+                    "3 -> question delete)" +
+                    "\n" +
+                    "4 -> log out\n" +
+                    "q -> quit")) {
+                case "1" -> Application.questionCreate();
+                case "2" -> Application.questionGetAll();
+                case "3" -> Application.questionDelete();
+                case "4" -> Session.setSessionUser(null);
+                case "q" -> {return;}
+                default -> Writer.println("wrong choice");
+            }
+        }
     }
 
 
